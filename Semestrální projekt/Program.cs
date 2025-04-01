@@ -304,7 +304,7 @@ namespace Semestrální_projekt
                 else
                 {
                     Console.WriteLine("Zadal jsi neplatný vstup");
-                    Console.WriteLine("A");
+                    Console.WriteLine("Ahoj světe");
                 }      
             }
         }
