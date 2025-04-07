@@ -26,7 +26,7 @@ namespace Semestrální_projekt
                 Menu();
                 //zvolení funkce uživatelem a převedení charakteru reprezentujícího funkci na malé písmeno
                 char funkce = char.ToLower((Console.ReadKey().KeyChar));
-                //Spuštění funkce na základě sisknutého znaku
+                //Spuštění funkce na základě sisknutého znaku díky switch konstrukci
                 switch (funkce)
                 {
                     case 's':
@@ -91,7 +91,7 @@ namespace Semestrální_projekt
                 Console.WriteLine("[r] - Pro vyhledání hry podle roku vydání");
                 Console.WriteLine("[d] - Pro vyhledání hry podle vývojářského studia");
                 Console.WriteLine("[z] - Pro vyhledání hry podle žánru");
-                //Console.WriteLine("[h] - ");
+                //Console.WriteLine("[h] - "); (Hledání identity této funkce)
                 Console.WriteLine("[k] - Pro ukončení programu");
             }
             //vytvoření metody fces pro vypsání seznamu her
@@ -114,10 +114,12 @@ namespace Semestrální_projekt
             void fcep()
             {
                 Console.Clear();
+                //Vytvoření proměné noveid, která určuje id nové hry podle maximálního id v XML souboru, (využití lambda výrazu) pokud hra neexistuje, id bude 1
                 int noveid = DatabaseHer.Root.Elements("Hra").Any() ?
                 DatabaseHer.Root.Elements("Hra").Max(x => (int?)x.Attribute("id") ?? 0) + 1 : 1;
 
                 Console.WriteLine("Zadej název nové hry:");
+                //Získání dat od uživatele, pokud uživatel zadá null, bude použita prázdná hodnota
                 string novynazev = Console.ReadLine() ?? "";
 
                 Console.WriteLine("Zadej název nového studia:");
@@ -125,6 +127,7 @@ namespace Semestrální_projekt
 
                 Console.WriteLine("Zadej rok vydání hry v rozsahu 1990-2025:");
                 int novyrokint;
+                //Ověření validního roku pomocí while cyklu
                 while (true)
                 {
                     string novyrokstr = Console.ReadLine() ?? "";
@@ -181,6 +184,7 @@ namespace Semestrální_projekt
                 DatabaseHer.Save(xmlcesta);
                 Console.WriteLine($"Nová hra {novynazev} byla přídána");
             }
+            //Metoda fceo pro odstranění hry ze seznamu podle id
             void fceo()
             {
                 Console.Clear();
@@ -190,6 +194,7 @@ namespace Semestrální_projekt
                 {
                     if (DatabaseHer?.Root != null)
                     {
+                        //Vytvoření proměné hraNaOdstraneni, která vyhledá hru podle id (využití lambda výrazu)
                         var hraNaOdstraneni = DatabaseHer.Root.Elements("Hra").FirstOrDefault(h => (int?)h.Attribute("id") == idint);
 
                         {
@@ -268,6 +273,7 @@ namespace Semestrální_projekt
                             {
                                 if ((hra.Element("VyvojarskeStudio")?.Value) == vyvojarstr.ToString())
                                 {
+                                    //Využití symbolu $ pro efektivní získání hodnoty z proměnných
                                     Console.WriteLine($"{hra.Element("NázevHry")?.Value}, {hra.Element("VyvojarskeStudio")?.Value}, " +
                                         $"{hra.Element("RokVydani")?.Value}, {hra.Element("Zanr")?.Value}, {hra.Element("PocetAchievementu")?.Value}");
                                 }
