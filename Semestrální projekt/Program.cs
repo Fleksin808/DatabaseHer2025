@@ -38,6 +38,12 @@ namespace Semestrální_projekt
                         fcep();
                         Console.ReadKey();
                         break;
+                    case 'o':
+                        Console.Clear();
+                        Console.WriteLine("Zadej id hry, kterou chceš odstranit ze seznamu vlastněných her");
+                        fceo();
+                        Console.ReadKey();
+                        break;
                     case 'r':
                         Console.Clear();
                         Console.WriteLine("Zadej rok vydání");
@@ -81,6 +87,7 @@ namespace Semestrální_projekt
                 Console.WriteLine("Zvolte jednu z možností");
                 Console.WriteLine("[s] - Pro vypsání všech zaznamenaných her");
                 Console.WriteLine("[p] - Pro přidání hry do seznamu vlastněných her");
+                Console.WriteLine("[o] - Pro odstranění hry ze seznamu vlastněných her");
                 Console.WriteLine("[r] - Pro vyhledání hry podle roku vydání");
                 Console.WriteLine("[d] - Pro vyhledání hry podle vývojářského studia");
                 Console.WriteLine("[z] - Pro vyhledání hry podle žánru");
@@ -95,7 +102,7 @@ namespace Semestrální_projekt
                 {
                     foreach (var hra in DatabaseHer.Root.Elements("Hra"))
                     {
-                        Console.WriteLine($"{hra.Element("NázevHry")?.Value}, " +
+                        Console.WriteLine($"{hra.Attribute("id")?.Value}, {hra.Element("NázevHry")?.Value}, " +
                             $"{hra.Element("VyvojarskeStudio")?.Value}, {hra.Element("RokVydani")?.Value}, {hra.Element("Zanr")?.Value}," +
                             $" {hra.Element("PocetAchievementu")?.Value}");
                     }
@@ -173,6 +180,37 @@ namespace Semestrální_projekt
                 DatabaseHer.Root.Add(novahra);
                 DatabaseHer.Save(xmlcesta);
                 Console.WriteLine($"Nová hra {novynazev} byla přídána");
+            }
+            void fceo()
+            {
+                Console.Clear();
+                Console.WriteLine("Zadej id hry, kterou chceš odstranit ze seznamu vlastněných her");
+                string idstr = Console.ReadLine() ?? "";
+                if (Int32.TryParse(idstr, out int idint))
+                {
+                    if (DatabaseHer?.Root != null)
+                    {
+                        var hraNaOdstraneni = DatabaseHer.Root.Elements("Hra").FirstOrDefault(h => (int?)h.Attribute("id") == idint);
+
+                        {
+                            if (hraNaOdstraneni != null)
+                            {
+                                hraNaOdstraneni.Remove();
+                                DatabaseHer.Save(xmlcesta);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Neexistuje hra se shodným id");
+                            }                            
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Zadal jsi neplatné id!");
+                }
+                Console.WriteLine("Hra byla úspěšně odstraněna");
+                Console.WriteLine("Pro návrat do menu stiskněte libovolnou klávesu...");                
             }
             //Metoda fcer pro vyhledání hry podle roku vydání
             void fcer()
@@ -282,7 +320,7 @@ namespace Semestrální_projekt
                     }
                 }
             }
-            
+
             void fceh()
             {
                 Console.Clear();
@@ -306,7 +344,7 @@ namespace Semestrální_projekt
                 else
                 {
                     Console.WriteLine("Zadal jsi neplatný vstup");
-                }      
+                }
             }
         }
     }
