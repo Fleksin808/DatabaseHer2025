@@ -345,10 +345,10 @@ namespace Semestrální_projekt
                             $"{hraNaEditaci.Element("VyvojarskeStudio")?.Value}, {hraNaEditaci.Element("RokVydani")?.Value}, {hraNaEditaci.Element("Zanr")?.Value}," +
                             $" {hraNaEditaci.Element("PocetAchievementu")?.Value}");
                             }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Neexistuje hra se shodným id");
+                            else
+                            {
+                                Console.WriteLine("Neexistuje hra se shodným id");
+                            }
                         }
                     }
                 }
