@@ -62,10 +62,10 @@ namespace Semestrální_projekt
                         fcez();
                         Console.ReadKey();
                         break;
-                    case 'h':
+                    case 'e':
                         Console.Clear();
                         Console.WriteLine("Zadej nejmenší požadované hodnocení na Metacritic");
-                        fceh();
+                        fcee();
                         Console.ReadKey();
                         break;
                     case 'k':
@@ -91,7 +91,7 @@ namespace Semestrální_projekt
                 Console.WriteLine("[r] - Pro vyhledání hry podle roku vydání");
                 Console.WriteLine("[d] - Pro vyhledání hry podle vývojářského studia");
                 Console.WriteLine("[z] - Pro vyhledání hry podle žánru");
-                //Console.WriteLine("[h] - "); (Hledání identity této funkce)
+                //Console.WriteLine("[e] - Pro editaci dat u vyžadované hry");
                 Console.WriteLine("[k] - Pro ukončení programu");
             }
             //vytvoření metody fces pro vypsání seznamu her
@@ -327,29 +327,30 @@ namespace Semestrální_projekt
                 }
             }
 
-            void fceh()
+            void fcee()
             {
                 Console.Clear();
-                Console.WriteLine("Zadej celkový počet achievementů v dané hře");
-                string pocetachistr1 = Console.ReadLine() ?? "";
-                if (Int32.TryParse(pocetachistr1, out int pocetachisint1))
+                Console.WriteLine("Zadej id hry kterou chceš upravit");
+                while(true)
                 {
-                    Console.WriteLine("Zadal jste platný vstup");
-                }
-                else
-                {
-                    Console.WriteLine("Zadal jste neplatný vstup");
-                }
-                Console.WriteLine("Zadej počet splněných achievementů");
-                string pocetachistr2 = Console.ReadLine() ?? "";
-                if (Int32.TryParse(pocetachistr2, out int pocetachisint2) && pocetachisint1 >= pocetachisint2)
-                {
-                    Console.WriteLine("Zadal jsi platný vstup");
-                    Console.WriteLine("Aktuální stav tvých achevementů je {0}/{1}", pocetachisint2, pocetachisint1);
-                }
-                else
-                {
-                    Console.WriteLine("Zadal jsi neplatný vstup");
+                    string idhrystr = Console.ReadLine();
+                    if(Int32.TryParse(idhrystr, out int idhryint))
+                    {
+                        if(DatabaseHer != null)
+                        {
+                            var hraNaEditaci = DatabaseHer.Root.Elements("Hra").FirstOrDefault(h => (int?)h.Attribute("id") == idint);
+                            if (hraNaEditaci != null)
+                            {
+                                Console.WriteLine($"{hraNaEditaci.Attribute("id")?.Value}, {hraNaEditaci.Element("NázevHry")?.Value}, " +
+                            $"{hraNaEditaci.Element("VyvojarskeStudio")?.Value}, {hraNaEditaci.Element("RokVydani")?.Value}, {hraNaEditaci.Element("Zanr")?.Value}," +
+                            $" {hraNaEditaci.Element("PocetAchievementu")?.Value}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Neexistuje hra se shodným id");
+                        }
+                    }
                 }
             }
         }
