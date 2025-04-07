@@ -5,10 +5,12 @@ namespace Semestrální_projekt
 {
     internal class Program
     {
+        //Stanovení statických proměných pro jednodušší práci s XML souborem
         static string xmlcesta = "databaseher.xml";
         static XDocument DatabaseHer = new XDocument(new XElement("Hry"));
         static void Main(string[] args)
         {
+            //Ověření existence XML souboru
             if (!File.Exists(xmlcesta))
             {
                 DatabaseHer.Save(xmlcesta);
@@ -20,11 +22,11 @@ namespace Semestrální_projekt
 
             while (true)
             {
-                //vyvolání metody menu
+                //Vyvolání metody menu
                 Menu();
                 //zvolení funkce uživatelem a převedení charakteru reprezentujícího funkci na malé písmeno
                 char funkce = char.ToLower((Console.ReadKey().KeyChar));
-                //spuštění funkce na základě sisknutého znaku
+                //Spuštění funkce na základě sisknutého znaku
                 switch (funkce)
                 {
                     case 's':
@@ -85,7 +87,7 @@ namespace Semestrální_projekt
                 //Console.WriteLine("[h] - ");
                 Console.WriteLine("[k] - Pro ukončení programu");
             }
-
+            //vytvoření metody fces pro vypsání seznamu her
             void fces()
             {
                 Console.WriteLine("Szenam her:");
@@ -101,7 +103,7 @@ namespace Semestrální_projekt
                 Console.ReadLine();
 
             }
-
+            //vytvoření metody fcep pro přidání hry do seznamu
             void fcep()
             {
                 Console.Clear();
@@ -158,7 +160,7 @@ namespace Semestrální_projekt
                     Console.WriteLine("Zadal jsi neplatný vstup");
                 }
 
-
+                //Vložení dat a uložení nového strukturovaného elementu "Hra" do XML souboru
                 XElement novahra = new XElement("Hra",
                             new XAttribute("id", noveid),
                             new XElement("NázevHry", novynazev),
@@ -172,7 +174,7 @@ namespace Semestrální_projekt
                 DatabaseHer.Save(xmlcesta);
                 Console.WriteLine($"Nová hra {novynazev} byla přídána");
             }
-
+            //Metoda fcer pro vyhledání hry podle roku vydání
             void fcer()
             {
                 if (DatabaseHer != null)
@@ -212,7 +214,7 @@ namespace Semestrální_projekt
                     }
                 }
             }
-
+            //Metoda fced pro vyhledání hry podle vývojářského studia
             void fced()
             {
                 if (DatabaseHer != null)
@@ -246,7 +248,7 @@ namespace Semestrální_projekt
                     }
                 }
             }
-
+            //Metoda fcez pro vyhledání hry podle žánru
             void fcez()
             {
                 if (DatabaseHer != null)
@@ -280,7 +282,7 @@ namespace Semestrální_projekt
                     }
                 }
             }
-
+            
             void fceh()
             {
                 Console.Clear();
