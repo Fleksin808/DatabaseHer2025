@@ -91,7 +91,7 @@ namespace Semestrální_projekt
                 Console.WriteLine("[r] - Pro vyhledání hry podle roku vydání");
                 Console.WriteLine("[d] - Pro vyhledání hry podle vývojářského studia");
                 Console.WriteLine("[z] - Pro vyhledání hry podle žánru");
-                //Console.WriteLine("[e] - Pro editaci dat u vyžadované hry");
+                Console.WriteLine("[e] - Pro editaci dat u vyžadované hry");
                 Console.WriteLine("[k] - Pro ukončení programu");
             }
             //vytvoření metody fces pro vypsání seznamu her
@@ -206,7 +206,7 @@ namespace Semestrální_projekt
                             else
                             {
                                 Console.WriteLine("Neexistuje hra se shodným id");
-                            }                            
+                            }
                         }
                     }
                 }
@@ -215,7 +215,7 @@ namespace Semestrální_projekt
                     Console.WriteLine("Zadal jsi neplatné id!");
                 }
                 Console.WriteLine("Hra byla úspěšně odstraněna");
-                Console.WriteLine("Pro návrat do menu stiskněte libovolnou klávesu...");                
+                Console.WriteLine("Pro návrat do menu stiskněte libovolnou klávesu...");
             }
             //Metoda fcer pro vyhledání hry podle roku vydání
             void fcer()
@@ -326,24 +326,130 @@ namespace Semestrální_projekt
                     }
                 }
             }
-
+            //Metoda fcee pro editaci dat u vyžadované hry
             void fcee()
             {
                 Console.Clear();
                 Console.WriteLine("Zadej id hry kterou chceš upravit");
-                while(true)
+                while (true)
                 {
-                    string idhrystr = Console.ReadLine();
-                    if(Int32.TryParse(idhrystr, out int idhryint))
+                    string idhrystr = Console.ReadLine() ?? "";
+                    Console.Clear();
+
+                    //Ověření validního id pomocí Int32
+                    if (Int32.TryParse(idhrystr, out int idhryint))
                     {
-                        if(DatabaseHer != null)
+                        if (DatabaseHer != null)
                         {
-                            var hraNaEditaci = DatabaseHer.Root.Elements("Hra").FirstOrDefault(h => (int?)h.Attribute("id") == idint);
+                            //Vytvoření proměné hraNaEditaci, která vyhledá hru podle id
+                            var hraNaEditaci = DatabaseHer.Root.Elements("Hra").FirstOrDefault(h => (int?)h.Attribute("id") == idhryint);
                             if (hraNaEditaci != null)
                             {
                                 Console.WriteLine($"{hraNaEditaci.Attribute("id")?.Value}, {hraNaEditaci.Element("NázevHry")?.Value}, " +
                             $"{hraNaEditaci.Element("VyvojarskeStudio")?.Value}, {hraNaEditaci.Element("RokVydani")?.Value}, {hraNaEditaci.Element("Zanr")?.Value}," +
                             $" {hraNaEditaci.Element("PocetAchievementu")?.Value}");
+
+                                Console.WriteLine("Pro zachování původní hodnoty zanech prázdné pole a stiskni [ENTER]");
+                                Console.WriteLine("Zadej nový název hry:");
+                                string novynazev = Console.ReadLine() ?? "";
+                                if (!string.IsNullOrWhiteSpace(novynazev))
+                                {
+                                    hraNaEditaci.SetElementValue("NázevHry", novynazev);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Zanechal jsi prázdné pole, původní hodnota byla zachována");
+                                }
+
+                                Console.WriteLine("Zadej nové vývojářské studio:");
+                                string novestudio = Console.ReadLine() ?? "";
+                                if (!string.IsNullOrWhiteSpace(novestudio))
+                                {
+                                    hraNaEditaci.SetElementValue("VyvojarskeStudio", novestudio);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Zanechal jsi prázdné pole, původní hodnota byla zachována");
+                                }
+
+                                Console.WriteLine("Zadej nový rok vydání hry v rozsahu 1990-2025:");
+                                int novyrokintedit;
+                                string novyrokstr = Console.ReadLine() ?? "";
+                                if (string.IsNullOrWhiteSpace(novyrokstr))
+                                {
+                                    Console.WriteLine("Zanechal jsi prázdné pole, původní hodnota byla zachována");
+                                }
+                                else
+                                {
+                                    while (true)
+                                    {
+
+                                        if (Int32.TryParse(novyrokstr, out novyrokintedit))
+                                        {
+                                            if (novyrokintedit >= 1990 && novyrokintedit <= 2025)
+                                            {
+                                                hraNaEditaci.SetElementValue("RokVydani", novyrokintedit);
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Zadaný rok není validní, zadej rok mezi 1990-2025");
+                                            }
+                                        }
+                                    }
+                                }
+
+                                Console.WriteLine("Zadej nový žánr nové hry:");
+                                string novyzanr = Console.ReadLine() ?? "";
+                                if (!string.IsNullOrWhiteSpace(novyzanr))
+                                {
+                                    hraNaEditaci.SetElementValue("Zanr", novyzanr);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Zanechal jsi prázdné pole, původní hodnota byla zachována");
+                                }
+
+                                Console.WriteLine("Zadej nový celkový počet achievementů v dané hře");
+                                string pocetachistr1 = Console.ReadLine() ?? "";
+                                int pocetachisint1 = 0;
+                                if (!string.IsNullOrWhiteSpace(pocetachistr1))
+                                {
+                                    if (Int32.TryParse(pocetachistr1, out pocetachisint1) && pocetachisint1 > 0)
+                                    {
+                                        Console.WriteLine("Zadal jste platný vstup");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Zadal jste neplatný vstup");
+                                    }                                   
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Původní hodnota byla zachována");
+                                }
+
+                                Console.WriteLine("Zadej nový počet splněných achievementů");
+                                string pocetachistr2 = Console.ReadLine() ?? "";
+                                if (!string.IsNullOrWhiteSpace(pocetachistr2))
+                                {
+                                    if (Int32.TryParse(pocetachistr2, out int pocetachisint2) && pocetachisint1 >= pocetachisint2)
+                                    {
+                                        hraNaEditaci.SetElementValue("PocetAchievementu", $"{pocetachisint2}/{pocetachisint1}");
+                                        Console.WriteLine("Zadal jste platný vstup");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Zadal jste neplatný vstup");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Původní hodnota byla zachována");
+                                }
+                                //Uložení změn do XML souboru
+                                DatabaseHer.Save(xmlcesta);
+                                break;
                             }
                             else
                             {
