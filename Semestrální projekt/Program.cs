@@ -30,40 +30,33 @@ namespace Semestrální_projekt
                 switch (funkce)
                 {
                     case 's':
-                        Console.Clear();
                         fces();
                         break;
                     case 'p':
-                        Console.Clear();
                         fcep();
                         Console.ReadKey();
                         break;
                     case 'o':
-                        Console.Clear();
                         Console.WriteLine("Zadej id hry, kterou chceš odstranit ze seznamu vlastněných her");
                         fceo();
                         Console.ReadKey();
                         break;
                     case 'r':
-                        Console.Clear();
                         Console.WriteLine("Zadej rok vydání");
                         fcer();
                         Console.ReadKey();
                         break;
                     case 'd':
-                        Console.Clear();
                         Console.WriteLine("Zadej název vývojářského studia");
                         fced();
                         Console.ReadKey();
                         break;
                     case 'z':
-                        Console.Clear();
                         Console.WriteLine("Zadej název požadovaného žánru");
                         fcez();
                         Console.ReadKey();
                         break;
-                    case 'e':
-                        Console.Clear();
+                    case 'e':                       
                         Console.WriteLine("Zadej nejmenší požadované hodnocení na Metacritic");
                         fcee();
                         Console.ReadKey();
@@ -71,6 +64,7 @@ namespace Semestrální_projekt
                     case 'k':
                         Console.Clear();
                         Console.WriteLine("Program se ukončil");
+                        Console.ReadKey();
                         return;
                     default:
                         Console.Clear();
@@ -94,21 +88,29 @@ namespace Semestrální_projekt
                 Console.WriteLine("[e] - Pro editaci dat u vyžadované hry");
                 Console.WriteLine("[k] - Pro ukončení programu");
             }
+
+            //vytvoření metody VypisDat pro vypsání dat o hře
+            //Využití symbolu $ pro efektivní získání hodnoty z proměnných
+            void VypisDat(XElement hra)
+            {
+                Console.WriteLine($"{hra.Attribute("id")?.Value}, {hra.Element("NázevHry")?.Value}, " +
+                                            $"{hra.Element("VyvojarskeStudio")?.Value}, {hra.Element("RokVydani")?.Value}, {hra.Element("Zanr")?.Value}," +
+                                            $" {hra.Element("PocetAchievementu")?.Value}");
+            }
+
             //vytvoření metody fces pro vypsání seznamu her
             void fces()
             {
+                Console.Clear();
                 Console.WriteLine("Szenam her:");
                 if (DatabaseHer != null)
                 {
                     foreach (var hra in DatabaseHer.Root.Elements("Hra"))
                     {
-                        Console.WriteLine($"{hra.Attribute("id")?.Value}, {hra.Element("NázevHry")?.Value}, " +
-                            $"{hra.Element("VyvojarskeStudio")?.Value}, {hra.Element("RokVydani")?.Value}, {hra.Element("Zanr")?.Value}," +
-                            $" {hra.Element("PocetAchievementu")?.Value}");
+                        VypisDat(hra);
                     }
                 }
                 Console.ReadLine();
-
             }
             //vytvoření metody fcep pro přidání hry do seznamu
             void fcep()
@@ -220,6 +222,7 @@ namespace Semestrální_projekt
             //Metoda fcer pro vyhledání hry podle roku vydání
             void fcer()
             {
+                Console.Clear();
                 if (DatabaseHer != null)
                 {
                     while (true)
@@ -234,8 +237,7 @@ namespace Semestrální_projekt
                                 {
                                     if ((hra.Element("RokVydani")?.Value) == rokint.ToString())
                                     {
-                                        Console.WriteLine($"{hra.Element("NázevHry")?.Value}, {hra.Element("VyvojarskeStudio")?.Value}, " +
-                                            $"{hra.Element("RokVydani")?.Value}, {hra.Element("Zanr")?.Value}, {hra.Element("PocetAchievementu")?.Value}");
+                                        VypisDat(hra);
                                     }
                                     else
                                     {
@@ -260,6 +262,7 @@ namespace Semestrální_projekt
             //Metoda fced pro vyhledání hry podle vývojářského studia
             void fced()
             {
+                Console.Clear();
                 if (DatabaseHer != null)
                 {
                     while (true)
@@ -273,9 +276,7 @@ namespace Semestrální_projekt
                             {
                                 if ((hra.Element("VyvojarskeStudio")?.Value) == vyvojarstr.ToString())
                                 {
-                                    //Využití symbolu $ pro efektivní získání hodnoty z proměnných
-                                    Console.WriteLine($"{hra.Element("NázevHry")?.Value}, {hra.Element("VyvojarskeStudio")?.Value}, " +
-                                        $"{hra.Element("RokVydani")?.Value}, {hra.Element("Zanr")?.Value}, {hra.Element("PocetAchievementu")?.Value}");
+                                    VypisDat(hra);
                                 }
                                 else
                                 {
@@ -295,6 +296,7 @@ namespace Semestrální_projekt
             //Metoda fcez pro vyhledání hry podle žánru
             void fcez()
             {
+                Console.Clear();
                 if (DatabaseHer != null)
                 {
                     while (true)
@@ -308,8 +310,7 @@ namespace Semestrální_projekt
                             {
                                 if ((hra.Element("Zanr")?.Value) == zanrstr.ToString())
                                 {
-                                    Console.WriteLine($"{hra.Element("NázevHry")?.Value}, {hra.Element("VyvojarskeStudio")?.Value}, " +
-                                        $"{hra.Element("RokVydani")?.Value}, {hra.Element("Zanr")?.Value}, {hra.Element("PocetAchievementu")?.Value}");
+                                    VypisDat(hra);
                                 }
                                 else
                                 {
