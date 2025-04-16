@@ -17,6 +17,7 @@ namespace Semestrální_projekt
             }
             else
             {
+                //Pokud soubor existuje, načte se do proměné DatabaseHer
                 DatabaseHer = XDocument.Load(xmlcesta);
             }
 
@@ -56,7 +57,7 @@ namespace Semestrální_projekt
                         fcez();
                         Console.ReadKey();
                         break;
-                    case 'e':                       
+                    case 'e':
                         Console.WriteLine("Zadej nejmenší požadované hodnocení na Metacritic");
                         fcee();
                         Console.ReadKey();
@@ -147,12 +148,13 @@ namespace Semestrální_projekt
                 }
 
                 Console.WriteLine("Zadej žánr nové hry:");
+                //Získání dat od uživatele, pokud uživatel zadá null, bude použita prázdná hodnota
                 string novyzanr = Console.ReadLine() ?? "";
 
                 Console.WriteLine("Zadej celkový počet achievementů v dané hře");
-
+                //Převede zadaný vstup na ze str na int a ověří že není menší než 0
                 string pocetachistr1 = Console.ReadLine() ?? "";
-                if (Int32.TryParse(pocetachistr1, out int pocetachisint1) && pocetachisint1 > 0)
+                if (Int32.TryParse(pocetachistr1, out int pocetachisint1) && pocetachisint1 >= 0)
                 {
                     Console.WriteLine("Zadal jste platný vstup");
                 }
@@ -161,6 +163,7 @@ namespace Semestrální_projekt
                     Console.WriteLine("Zadal jste neplatný vstup");
                 }
                 Console.WriteLine("Zadej počet splněných achievementů");
+                //Ověří zda je počet splněných achievementů v rozsahu celkového počtu achievementů
                 string pocetachistr2 = Console.ReadLine() ?? "";
                 if (Int32.TryParse(pocetachistr2, out int pocetachisint2) && pocetachisint1 >= pocetachisint2)
                 {
@@ -181,7 +184,7 @@ namespace Semestrální_projekt
                             new XElement("Zanr", novyzanr),
                             new XElement("PocetAchievementu", $"{pocetachisint2}/{pocetachisint1}")
                             );
-
+                //Přidání nové hry do souboru XML, následné uložení a vypsání názvu nové hry
                 DatabaseHer.Root.Add(novahra);
                 DatabaseHer.Save(xmlcesta);
                 Console.WriteLine($"Nová hra {novynazev} byla přídána");
@@ -200,6 +203,7 @@ namespace Semestrální_projekt
                         var hraNaOdstraneni = DatabaseHer.Root.Elements("Hra").FirstOrDefault(h => (int?)h.Attribute("id") == idint);
 
                         {
+                            //Pokud existuje hra s požadovaným id, odstraní se z XML souboru, jinak napíše hlášku, že hra s daným id neexistuje
                             if (hraNaOdstraneni != null)
                             {
                                 hraNaOdstraneni.Remove();
@@ -227,12 +231,14 @@ namespace Semestrální_projekt
                 {
                     while (true)
                     {
+                        //Ověření validního roku pomocí TryParse a podmínky
                         string rokstr = Console.ReadLine() ?? "";
                         if (Int32.TryParse(rokstr, out int rokint))
                         {
                             if (!string.IsNullOrWhiteSpace(rokstr) && rokint >= 1990 && rokint <= 2025)
                             {
                                 Console.WriteLine("Zadal jsi validní rok");
+                                //Pokud existuje hra s požadovaným rokem, vypíše se její název, jinak napíše hlášku, že hra s daným rokem neexistuje
                                 foreach (var hra in DatabaseHer.Root.Elements("Hra"))
                                 {
                                     if ((hra.Element("RokVydani")?.Value) == rokint.ToString())
@@ -344,14 +350,15 @@ namespace Semestrální_projekt
                         {
                             //Vytvoření proměné hraNaEditaci, která vyhledá hru podle id
                             var hraNaEditaci = DatabaseHer.Root.Elements("Hra").FirstOrDefault(h => (int?)h.Attribute("id") == idhryint);
+                            //Pokud existuje hra s požadovaným id, vypíše program její data a umožní editaci, jinak napíše hlášku, že hra s daným id neexistuje
                             if (hraNaEditaci != null)
                             {
-                                Console.WriteLine($"{hraNaEditaci.Attribute("id")?.Value}, {hraNaEditaci.Element("NázevHry")?.Value}, " +
-                            $"{hraNaEditaci.Element("VyvojarskeStudio")?.Value}, {hraNaEditaci.Element("RokVydani")?.Value}, {hraNaEditaci.Element("Zanr")?.Value}," +
-                            $" {hraNaEditaci.Element("PocetAchievementu")?.Value}");
+
+                                VypisDat(hraNaEditaci);
 
                                 Console.WriteLine("Pro zachování původní hodnoty zanech prázdné pole a stiskni [ENTER]");
                                 Console.WriteLine("Zadej nový název hry:");
+                                //Pokud uživatel zadá prázdné pole, zachová se původní hodnota
                                 string novynazev = Console.ReadLine() ?? "";
                                 if (!string.IsNullOrWhiteSpace(novynazev))
                                 {
@@ -384,7 +391,7 @@ namespace Semestrální_projekt
                                 {
                                     while (true)
                                     {
-
+                                        //Ověření smysluplnosti roku vydání
                                         if (Int32.TryParse(novyrokstr, out novyrokintedit))
                                         {
                                             if (novyrokintedit >= 1990 && novyrokintedit <= 2025)
@@ -423,7 +430,7 @@ namespace Semestrální_projekt
                                     else
                                     {
                                         Console.WriteLine("Zadal jste neplatný vstup");
-                                    }                                   
+                                    }
                                 }
                                 else
                                 {
