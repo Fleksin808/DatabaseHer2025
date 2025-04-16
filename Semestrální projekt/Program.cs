@@ -208,6 +208,7 @@ namespace Semestrální_projekt
                             {
                                 hraNaOdstraneni.Remove();
                                 DatabaseHer.Save(xmlcesta);
+                                Console.WriteLine("Hra byla úspěšně odstraněna");
                             }
                             else
                             {
@@ -220,7 +221,6 @@ namespace Semestrální_projekt
                 {
                     Console.WriteLine("Zadal jsi neplatné id!");
                 }
-                Console.WriteLine("Hra byla úspěšně odstraněna");
                 Console.WriteLine("Pro návrat do menu stiskněte libovolnou klávesu...");
             }
             //Metoda fcer pro vyhledání hry podle roku vydání
