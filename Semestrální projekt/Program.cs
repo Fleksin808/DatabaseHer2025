@@ -417,6 +417,7 @@ namespace Semestrální_projekt
                                 string novyzanr = Console.ReadLine() ?? "";
                                 if (!string.IsNullOrWhiteSpace(novyzanr))
                                 {
+                                    //Pokud uživatel zadá prázdné pole, zachová se původní hodnota, jinak se změní na nový vstup
                                     hraNaEditaci.SetElementValue("Zanr", novyzanr);
                                 }
                                 else
@@ -447,6 +448,7 @@ namespace Semestrální_projekt
                                 string pocetachistr2 = Console.ReadLine() ?? "";
                                 if (!string.IsNullOrWhiteSpace(pocetachistr2))
                                 {
+                                    //Ověření zda je počet splněných achievementů v rozsahu celkového počtu achievementů
                                     if (Int32.TryParse(pocetachistr2, out int pocetachisint2) && pocetachisint1 >= pocetachisint2)
                                     {
                                         hraNaEditaci.SetElementValue("PocetAchievementu", $"{pocetachisint2}/{pocetachisint1}");
