@@ -342,6 +342,12 @@ namespace Semestrální_projekt
                 {
                     string idhrystr = Console.ReadLine() ?? "";
                     Console.Clear();
+                    //Pokud uživatel zadá prázdné pole, program vypíše hlášku a vrátí ho do menu
+                    if (string.IsNullOrWhiteSpace(idhrystr))
+                    {
+                        Console.WriteLine("Zadán neplatný vstup!");
+                        break;
+                    }
 
                     //Ověření validního id pomocí Int32
                     if (Int32.TryParse(idhrystr, out int idhryint))
@@ -423,7 +429,7 @@ namespace Semestrální_projekt
                                 int pocetachisint1 = 0;
                                 if (!string.IsNullOrWhiteSpace(pocetachistr1))
                                 {
-                                    if (Int32.TryParse(pocetachistr1, out pocetachisint1) && pocetachisint1 > 0)
+                                    if (Int32.TryParse(pocetachistr1, out pocetachisint1) && pocetachisint1 >= 0)
                                     {
                                         Console.WriteLine("Zadal jste platný vstup");
                                     }
