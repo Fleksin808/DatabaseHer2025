@@ -172,6 +172,8 @@ namespace Semestrální_projekt
                 }
                 else
                 {
+                    pocetachisint1 = 0;
+                    pocetachisint2 = 0;
                     Console.WriteLine("Zadal jsi neplatný vstup");
                 }
 
